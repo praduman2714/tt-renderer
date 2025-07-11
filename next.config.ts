@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+// next.config.ts
+module.exports = {
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.node$/,
+      use: "node-loader",
+    });
 
-const nextConfig: NextConfig = {
-  /* config options here */
+    return config;
+  },
 };
-
-export default nextConfig;

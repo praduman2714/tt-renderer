@@ -8,7 +8,16 @@ import React from "react";
 import { FORM_SG_URL } from "@/route";
 import { Banner } from "@/Banner";
 import { DocumentUtility } from "@/DocumentUtility";
-import { DecentralisedRendererContainer } from "@/DecentralisedTemplateRenderer/DecentralisedRenderer";
+import dynamic from "next/dynamic";
+
+// import { DecentralisedRendererContainer } from "@/DecentralisedTemplateRenderer/DecentralisedRenderer";
+const DecentralisedRendererContainer = dynamic(() =>
+  import("@/DecentralisedTemplateRenderer/DecentralisedRenderer").then(
+    (mod) => mod.DecentralisedRendererContainer // 👈 make this the default
+  ),
+  { ssr: false }
+);
+
 import { CertificateViewerErrorBoundary } from "@/CertificateViewerErrorBoundary/CertificateViewerErrorBoundary";
 import { WrappedOrSignedOpenAttestationDocument } from "../../utils/shared";
 

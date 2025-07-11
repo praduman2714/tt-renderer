@@ -5,13 +5,20 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
   useImperativeHandle,
   FunctionComponent,
   Ref,
+  useState,
 } from "react";
-import { connect } from "react-redux";
+import {
+  FrameActions,
+  FrameConnector,
+  renderDocument,
+  selectTemplate,
+  print,
+} from "@tradetrust-tt/decentralized-renderer-react-components";
 import { applyPrivacyFilter } from "../reducers/certificate";
+import { connect } from "react-redux";
 import { TemplateProps } from "@/types";
 import {
   WrappedOrSignedOpenAttestationDocument,
@@ -37,79 +44,57 @@ const DecentralisedRenderer: FunctionComponent<DecentralisedRendererProps> = ({
   setPrivacyFilter,
   forwardedRef,
 }) => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const documentData = useMemo(() => getOpenAttestationData(rawDocument), [rawDocument]);
+  const toFrame = useRef<((action: FrameActions) => void) | null>(null);
+  const document = useMemo(() => getOpenAttestationData(rawDocument), [rawDocument]);
   const [height, setHeight] = useState(250);
   const source = getTemplateUrl(rawDocument) ?? DEFAULT_RENDERER_URL;
 
   useImperativeHandle(forwardedRef, () => ({
     print() {
-      iframeRef.current?.contentWindow?.postMessage({ type: "PRINT" }, "*");
+      if (toFrame.current) {
+        toFrame.current(print());
+      }
     },
   }));
 
-  const postRenderDocument = useCallback(() => {
-    iframeRef.current?.contentWindow?.postMessage(
-      {
-        type: "RENDER_DOCUMENT",
-        payload: {
-          rawDocument,
-          document: documentData,
-        },
-      },
-      "*"
-    );
-  }, [rawDocument, documentData]);
+  const onConnected = useCallback((frame: (action: FrameActions) => void) => {
+    toFrame.current = frame;
+    frame(renderDocument({ document, rawDocument }));
+  }, [document, rawDocument]);
 
-  const postSelectTemplate = useCallback(() => {
-    iframeRef.current?.contentWindow?.postMessage(
-      {
-        type: "SELECT_TEMPLATE",
-        payload: selectedTemplate,
-      },
-      "*"
-    );
-  }, [selectedTemplate]);
-
-  // Listen for messages from iframe
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      const { type, payload } = event.data || {};
-      if (!type) return;
-
-      switch (type) {
-        case "UPDATE_HEIGHT":
-          setHeight(payload + SCROLLBAR_WIDTH);
-          break;
-        case "UPDATE_TEMPLATES":
-          updateTemplates(payload);
-          break;
-        case "OBFUSCATE":
-          setPrivacyFilter(payload);
-          break;
-        default:
-          break;
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+  const dispatch = useCallback((action: FrameActions) => {
+    switch (action.type) {
+      case "UPDATE_HEIGHT":
+        setHeight(action.payload + SCROLLBAR_WIDTH);
+        break;
+      case "UPDATE_TEMPLATES":
+        updateTemplates(action.payload);
+        break;
+      case "OBFUSCATE":
+        setPrivacyFilter(action.payload);
+        break;
+    }
   }, [updateTemplates, setPrivacyFilter]);
 
   useEffect(() => {
-    postRenderDocument();
-  }, [postRenderDocument]);
+    if (toFrame.current) {
+      toFrame.current(renderDocument({ document, rawDocument }));
+    }
+  }, [document, rawDocument]);
 
   useEffect(() => {
-    if (selectedTemplate) postSelectTemplate();
-  }, [postSelectTemplate]);
+    if (toFrame.current && selectedTemplate) {
+      toFrame.current(selectTemplate(selectedTemplate));
+    }
+  }, [selectedTemplate]);
 
   return (
     <div className="container">
-      <iframe
-        ref={iframeRef}
-        src={source}
+      <FrameConnector
+        source={source}
         style={{ height: `${height}px`, width: "100%", border: "none" }}
+        dispatch={dispatch}
+        onConnected={onConnected}
       />
     </div>
   );
