@@ -1,7 +1,7 @@
 import { utils } from "ethers";
-import { compareDesc, compareAsc } from "date-fns";
-import { ChainId } from "../constants/chain-info";
-import { getChainInfo } from "../common/utils/chain-utils";
+// import { compareDesc, compareAsc } from "date-fns";
+import { ChainId } from "../src/constants/chain-info";
+import { getChainInfo } from "../src/common/utils/chain-utils";
 
 export const makeEtherscanAddressURL = (address: string, chainId: ChainId): string => {
   const baseUrl = getChainInfo(chainId).explorerUrl;
@@ -25,21 +25,21 @@ export const convertSecondsToMinAndSec = (seconds: number): string => {
   return `${~~(seconds / 60)}:${sec < 10 ? `0${sec}` : sec}m`;
 };
 
-export const getSortedByDateDesc = (items: any[]): any[] => {
-  items.sort((a, b): number => {
-    return compareDesc(new Date(a.attributes.date), new Date(b.attributes.date));
-  });
+// export const getSortedByDateDesc = (items: any[]): any[] => {
+//   items.sort((a, b): number => {
+//     return compareDesc(new Date(a.attributes.date), new Date(b.attributes.date));
+//   });
 
-  return items;
-};
+//   return items;
+// };
 
-export const getSortedByDateAsc = (items: any[]): any[] => {
-  items.sort((a, b): number => {
-    return compareAsc(new Date(a.attributes.date), new Date(b.attributes.date));
-  });
+// export const getSortedByDateAsc = (items: any[]): any[] => {
+//   items.sort((a, b): number => {
+//     return compareAsc(new Date(a.attributes.date), new Date(b.attributes.date));
+//   });
 
-  return items;
-};
+//   return items;
+// };
 
 // https://docs.netlify.com/forms/setup/#submit-javascript-rendered-forms-with-ajax
 export const encode: any = (data: { [x: string]: string | number | boolean }) => {

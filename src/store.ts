@@ -1,11 +1,17 @@
+// store.ts
 import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import sagas from "./sagas";
 import { createRootReducer } from "./reducers";
 
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
 const sagaMiddleware = createSagaMiddleware();
 
-// Enable Redux DevTools only in development
 const composeEnhancers =
   (typeof window !== "undefined" &&
     process.env.NODE_ENV === "development" &&

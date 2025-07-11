@@ -1,6 +1,6 @@
 import { v2, utils } from "@tradetrust-tt/tradetrust";
 import { ButtonIcon } from "@tradetrust-tt/tradetrust-ui-components";
-import { QRCodeCanvas as QRCode, ImageSettings } from "qrcode.react"; // ✅ fixed import
+import { QRCodeCanvas as QRCode } from "qrcode.react"; // ✅ fixed import
 import React, { FunctionComponent, useState } from "react";
 import { Download, Printer } from "react-feather";
 import { SvgIcon, SvgIconQRCode } from "../SvgIcon";
@@ -26,11 +26,11 @@ export const DocumentUtility: FunctionComponent<DocumentUtilityProps> = ({ docum
   const documentWithMetadata = getOpenAttestationData(document) as DocumentWithAdditionalMetadata;
   const { name, links } = utils.isRawV3Document(documentWithMetadata)
     ? documentWithMetadata.credentialSubject
-    : documentWithMetadata;
+    : documentWithMetadata as any;
   const fileName = name ?? "Untitled";
   const qrcodeUrl = links?.self?.href;
 
-  const imageSettings: ImageSettings = {
+  const imageSettings: any = {
     src: `/static/images/logo-qrcode.png`,
     height: 50,
     width: 55,

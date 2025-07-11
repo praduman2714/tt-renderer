@@ -52,14 +52,14 @@ const DecentralisedRenderer: FunctionComponent<DecentralisedRendererProps> = ({
   useImperativeHandle(forwardedRef, () => ({
     print() {
       if (toFrame.current) {
-        toFrame.current(print());
+        toFrame.current(print() as any);
       }
     },
   }));
 
-  const onConnected = useCallback((frame: (action: FrameActions) => void) => {
+  const onConnected = useCallback((frame: any) => {
     toFrame.current = frame;
-    frame(renderDocument({ document, rawDocument }));
+    frame(renderDocument({ document, rawDocument }) as any);
   }, [document, rawDocument]);
 
   const dispatch = useCallback((action: FrameActions) => {
@@ -78,18 +78,18 @@ const DecentralisedRenderer: FunctionComponent<DecentralisedRendererProps> = ({
 
   useEffect(() => {
     if (toFrame.current) {
-      toFrame.current(renderDocument({ document, rawDocument }));
+      toFrame.current(renderDocument({ document, rawDocument }) as any);
     }
   }, [document, rawDocument]);
 
   useEffect(() => {
     if (toFrame.current && selectedTemplate) {
-      toFrame.current(selectTemplate(selectedTemplate));
+      toFrame.current(selectTemplate(selectedTemplate) as any);
     }
   }, [selectedTemplate]);
 
   return (
-    <div className="container">
+    <div className="w-full">
       <FrameConnector
         source={source}
         style={{ height: `${height}px`, width: "100%", border: "none" }}

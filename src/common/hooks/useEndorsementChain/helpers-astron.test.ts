@@ -1,6 +1,6 @@
 import { providers } from "ethers";
 import { useProviderContext } from "../../contexts/provider";
-import { TradeTrustToken__factory } from "@tradetrust-tt/token-registry/dist/contracts";
+import { TradeTrustToken__factory } from "@tradetrust-tt/token-registry/contracts";
 import { fetchEventTime } from "./helpers";
 import { retrieveTitleEscrowAddressOnFactory } from "../useTitleEscrowContract";
 import { ChainId, ChainInfo } from "../../../constants/chain-info";

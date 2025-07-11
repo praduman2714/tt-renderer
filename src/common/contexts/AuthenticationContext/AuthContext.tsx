@@ -1,4 +1,4 @@
-import React, { createContext, ReactChildren, useContext } from "react";
+import React, { createContext, ReactNode, useContext } from "react";
 import { magic } from "../helpers";
 import { useProviderContext } from "../provider";
 interface AuthContextProps {
@@ -18,7 +18,7 @@ const AuthContext = createContext<AuthContextProps>({
  * auth provider depends on provider provider
  * so ensure that auth provider sits under provider provider component tree
  */
-export const AuthProvider: any = ({ children }: { children: ReactChildren }) => {
+export const AuthProvider: any = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const { upgradeToMagicSigner } = useProviderContext();
 

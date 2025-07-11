@@ -1,5 +1,5 @@
 import { HostActions } from "@tradetrust-tt/decentralized-renderer-react-components";
-import { ChainId } from "./../constants/chain-info";
+import { ChainId } from "../src/constants/chain-info";
 
 export interface TemplateProps {
   id: string;

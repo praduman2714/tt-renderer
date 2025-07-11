@@ -96,7 +96,8 @@ export const getErrorPageProps = ({
 }: {
   errorType: CERTIFICATE_VIEWER_ERROR_TYPE;
 }): ErrorPageProps => {
-  const message = CERTIFICATE_VIEWER_ERROR_MESSAGES[errorType] ?? CERTIFICATE_VIEWER_ERROR_MESSAGES.GENERIC;
+  const message = CERTIFICATE_VIEWER_ERROR_MESSAGES[errorType] ?? CERTIFICATE_VIEWER_ERROR_MESSAGES[CERTIFICATE_VIEWER_ERROR_TYPE.GENERIC]
+  ;
   return {
     pageTitle: message.title,
     header: message.heading,

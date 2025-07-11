@@ -1,6 +1,6 @@
 import { providers } from "ethers";
 import { useProviderContext } from "../../contexts/provider";
-import { TitleEscrow__factory } from "@tradetrust-tt/token-registry/dist/contracts";
+import { TitleEscrow__factory } from "@tradetrust-tt/token-registry/contracts";
 import { fetchEscrowTransfers, fetchHolderTransfers, fetchOwnerTransfers, getParsedLogs } from "./fetchEscrowTransfer";
 import { ChainId, ChainInfo } from "../../../constants/chain-info";
 

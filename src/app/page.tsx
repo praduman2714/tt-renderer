@@ -125,16 +125,16 @@ export default function Home() {
           selectedTemplate={selectedTemplate}
         /> */}
       </div>
-      <div className="bg-white py-6">
+      <div className="bg-white py-6 border border-red-500 w-[80vw]">
         {/* {attachments && (
           <div className={`${selectedTemplate !== "attachmentTab" ? "hidden" : "block"}`}>
             <TabPaneAttachments attachments={attachments} />
           </div>
         )} */}
-        <div className={`${selectedTemplate === "attachmentTab" ? "hidden" : "block"}`}>
+        <div className={`${selectedTemplate === "attachmentTab" ? "hidden" : "block"} border border-red-500`}>
           {templates.length > 0 && <DocumentUtility document={document as unknown as WrappedOrSignedOpenAttestationDocument} onPrint={onPrint} />}
           <DecentralisedRendererContainer
-            rawDocument={document}
+            rawDocument={document as unknown as WrappedOrSignedOpenAttestationDocument}
             updateTemplates={updateTemplates}
             selectedTemplate={selectedTemplate}
             ref={childRef}

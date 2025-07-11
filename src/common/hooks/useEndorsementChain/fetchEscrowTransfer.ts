@@ -7,7 +7,7 @@ export const fetchEscrowTransfers = async (
   provider: providers.Provider,
   address: string
 ): Promise<TitleEscrowTransferEvent[]> => {
-  const titleEscrowContract = TitleEscrow__factory.connect(address, provider);
+  const titleEscrowContract = TitleEscrow__factory.connect(address, provider as any);
   const isTitleEscrow = await titleEscrowContract.supportsInterface("0x079dff60");
   if (!isTitleEscrow) throw new Error(`Contract ${address} is not a title escrow contract`);
   // https://ethereum.stackexchange.com/questions/109326/combine-multiple-event-filters-in-ethersjs
@@ -24,7 +24,7 @@ export const fetchOwnerTransfers = async (
   titleEscrowContract: TitleEscrow,
   provider: providers.Provider
 ): Promise<TitleEscrowTransferEvent[]> => {
-  const ownerChangeFilter = titleEscrowContract.filters.BeneficiaryTransfer(null, null);
+  const ownerChangeFilter = titleEscrowContract.filters.BeneficiaryTransfer(null as any, null as any);
   const ownerChangeLogs = await provider.getLogs({ ...ownerChangeFilter, fromBlock: 0 });
 
   const ownerChangeLogsParsed = getParsedLogs(ownerChangeLogs, titleEscrowContract);
@@ -53,7 +53,7 @@ interface ParsedLog {
   data: string;
 }
 
-export const getParsedLogs = (logs: providers.Log[], titleEscrow: TitleEscrow): ParsedLog[] => {
+export const getParsedLogs = (logs: providers.Log[], titleEscrow: TitleEscrow): any[] => {
   return logs.map((log) => {
     if (!log.blockNumber) throw new Error("Block number not present");
     return {
@@ -70,7 +70,7 @@ export const fetchHolderTransfers = async (
   titleEscrowContract: TitleEscrow,
   provider: providers.Provider
 ): Promise<TitleEscrowTransferEvent[]> => {
-  const holderChangeFilter = titleEscrowContract.filters.HolderTransfer(null, null);
+  const holderChangeFilter = titleEscrowContract.filters.HolderTransfer(null as any, null as any);
   const holderChangeLogs = await provider.getLogs({ ...holderChangeFilter, fromBlock: 0 });
   const holderChangeLogsParsed = getParsedLogs(holderChangeLogs, titleEscrowContract);
   return holderChangeLogsParsed.map((event) => ({

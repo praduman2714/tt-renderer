@@ -1,7 +1,7 @@
 import { providers } from "ethers";
 import { useProviderContext } from "../../contexts/provider";
 import { fetchTokenTransfers, identifyTokenTransferEventsFunction } from "./fetchTokenTransfer";
-import { TradeTrustToken__factory } from "@tradetrust-tt/token-registry/dist/contracts";
+import { TradeTrustToken__factory } from "@tradetrust-tt/token-registry/contracts";
 import { LogDescription, Result } from "ethers/lib/utils";
 import { ChainId, ChainInfo } from "../../../constants/chain-info";
 

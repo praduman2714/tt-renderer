@@ -28,7 +28,7 @@ export const TooltipIcon: FunctionComponent<TooltipIconProps> = ({
       <SvgIcon tooltipId={id} className={className}>
         {children}
       </SvgIcon>
-      <ReactTooltip
+      {/* <ReactTooltip
         id={`tooltip-${id}`}
         place={placement}
         type="dark"
@@ -36,7 +36,7 @@ export const TooltipIcon: FunctionComponent<TooltipIconProps> = ({
         getContent={() => {
           return content;
         }}
-      />
+      /> */}
     </>
   );
 };
